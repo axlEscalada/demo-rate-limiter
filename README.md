@@ -31,6 +31,13 @@ Let's say that:
 - first message enter 10:01:01 so the TTL will be 60 seconds
 - second message enter 10:01:41 the TTL that will be keept is 20 seconds because is whats left to drop the first message
 
+## Local deploy/Test guide
+This repo contains a Makefile with 2 commands:
+- `build`: this command build the jar needed to run the application and also buil/rebuild the docker image using the Dockerfile
+- `run-app`: this command just runs the docker-compose file that starts a redis container and the app container and expose the app in 8080 port
+### For debug:
+If you want to debug the app you can attach to por 5005 remotely maybe using intellij or another IDE, or you can just run the redis image and also run without docker the app jar.
+
 ## TODOs/Improvements:
 - Write documentation of API
 - Define a clear retry strategy for dropped notifications, for example instead of drop request that exceeds rate limit treshold it could add them to a queue and reprocess.
