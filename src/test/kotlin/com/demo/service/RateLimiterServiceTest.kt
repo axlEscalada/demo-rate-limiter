@@ -48,8 +48,8 @@ class RateLimiterServiceTest {
         MockKAnnotations.init(this)
         every { redisTemplate.opsForValue() } returns valueOps
         every {
-            rateLimiterConfiguration.configMap
-        } returns Maps.newHashMap(DomainType.MARKETING, DomainConfiguration(UnitType.MINUTES, 1, LIMIT))
+            rateLimiterConfiguration.getConfigurationByDomain(any())
+        } returns DomainConfiguration(TimeUnit.MINUTES, 1, LIMIT)
     }
 
     @Test

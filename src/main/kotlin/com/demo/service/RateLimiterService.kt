@@ -26,12 +26,12 @@ class RateLimiterService(
 
     fun checkRateLimit(payload: NotificationPayloadDto) {
         val key = buildKey(payload)
-        val value = redisTemplate.opsForValue()
-            .get(buildKey(payload))?: 0
-        val configByType = rateLimiterConfiguration
-            .configMap!!.getOrThrow(payload.domainType.name.lowercase(), NotFoundConfigurationException("There is no configuration for ${payload.domainType}"))
+        val value = redisTemplate.opsForValue().get(buildKey(payload))?: 0
+        val configByType = rateLimiterConfiguration.getConfigurationByDomain(payload.domainType.name.lowercase())
+
         if(configByType.limit <= value) {
-            logger.error("Limit of ${configByType.limit} notifications exceeded for address ${payload.recipientAddress} in notification domain ${payload.domainType.name}")
+            logger.error("Limit of ${configByType.limit} notifications exceeded for address ${payload.recipientAddress} " +
+                    "in notification domain ${payload.domainType.name}")
             throw RateLimiterExceededException("Limit exceeded for ${payload.recipientAddress} in ${payload.domainType.name} domain")
         }
 
@@ -57,7 +57,4 @@ class RateLimiterService(
         return payload.domainType.name.plus("-").plus(payload.recipientAddress)
     }
 
-    private fun <T, V> Map<T, V>.getOrThrow(key: T, ex: Throwable): V {
-        return this.get(key) ?: throw ex
-    }
 }
