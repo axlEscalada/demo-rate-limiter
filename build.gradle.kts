@@ -33,6 +33,44 @@ dependencies {
 	}
 	testImplementation("io.mockk:mockk:1.13.7")
 
+	// IntegrationTest
+	testImplementation("com.redis.testcontainers:testcontainers-redis-junit:1.6.4")
+
+}
+
+tasks.withType<Test> {
+	useJUnitPlatform()
+
+	testLogging {
+		events("passed", "skipped", "failed")
+	}
+}
+
+val integrationTest: SourceSet = sourceSets.create("integrationTest") {
+	java {
+		compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+		runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+		srcDir("src/integrationTest/kotlin")
+	}
+	resources.srcDir("src/integrationTest/resources")
+}
+
+configurations[integrationTest.implementationConfigurationName].extendsFrom(configurations.testImplementation.get())
+configurations[integrationTest.runtimeOnlyConfigurationName].extendsFrom(configurations.testRuntimeOnly.get())
+
+val integrationTestTask = tasks.register<Test>("integrationTest") {
+	group = "verification"
+
+	useJUnitPlatform()
+
+	testClassesDirs = integrationTest.output.classesDirs
+	classpath = sourceSets["integrationTest"].runtimeClasspath
+
+	shouldRunAfter("test")
+}
+
+tasks.check {
+	dependsOn(integrationTestTask)
 }
 
 tasks.withType<KotlinCompile> {

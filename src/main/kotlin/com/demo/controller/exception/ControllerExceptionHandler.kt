@@ -18,7 +18,7 @@ class ControllerExceptionHandler: ResponseEntityExceptionHandler() {
             exception,
             ErrorResponseDto(exception.message!!),
             HttpHeaders(),
-            HttpStatus.CONFLICT,
+            HttpStatus.TOO_MANY_REQUESTS,
             request
         )!!
     }
