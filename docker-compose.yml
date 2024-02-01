@@ -1,0 +1,18 @@
+version: '3.0'
+
+services:
+  rate-limiter:
+    build: .
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    links:
+      - redis
+    environment:
+      - spring.redis.host=localhost
+      - spring.redis.port=6379
+  redis:
+    image: redis:7.2.4
+    container_name: rate-limiter-redis
+    ports:
+      - '6379:6379'

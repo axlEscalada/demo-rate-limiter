@@ -1,0 +1,20 @@
+limits:
+  configMap:
+    status:
+      unit: MINUTES
+      rate: 1
+      limit: 2
+    news:
+      unit: DAYS
+      rate: 1
+      limit: 1
+    marketing:
+      unit: HOURS
+      rate: 1
+      limit: 3
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+
