@@ -5,7 +5,7 @@ This is a single service that take request from many sources check a rate limit 
 
 In order to implement a Notification service with a rate limiter I decided to use one component for notification and rate limiter for simplicity. This component is an API rest that each request that receive for notification it checks that is candidate to se sent or if it's dropped of the message service and return a clear message of the error.
 
-## Diagram 
+### Diagram 
 ![image](https://github.com/axlEscalada/demo-rate-limiter/assets/87334103/793c92e1-94e9-4a26-a968-a524a6d689b7)
 
 
@@ -15,7 +15,7 @@ It's a single component due to the simplicity of the case, it's possible to scal
 ### Disadvantages 
 If there is a lot of messages drop due to rate limiter the whole service is going to scale out and probably also scale the notification service without the necessity of do it, a good solution for this case scenario is extract the rate limiter service and make it as a separate component that interact as a middleware between source of notifications and notifification service.
 
-### Rate limiter algorithm
+## Rate limiter algorithm
 The algorithm used in this rate limiter is fixed window counter, this algorithm will store the first notification given a key (domain plus an address) and store the number of ocurrences in redis setting a ttl using the domain configuration. For example a domaing configuration look like this:
 ```
 limits:
