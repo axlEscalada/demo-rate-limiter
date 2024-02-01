@@ -31,6 +31,13 @@ Let's say that:
 - first message enter 10:01:01 so the TTL will be 60 seconds
 - second message enter 10:01:41 the TTL that will be keept is 20 seconds because is whats left to drop the first message
 
+# Build, Test, Deploy
+## Prerequistes:
+- Jdk 17
+- Gradle 7.4.2 
+- Docker
+- CMake
+
 ## Local deploy/Test guide
 This repo contains a Makefile with 2 commands:
 - `build`: this command build the jar needed to run the application and also buil/rebuild the docker image using the Dockerfile
